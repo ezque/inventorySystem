@@ -2,8 +2,6 @@ import getDB from './database';
 
 async function createProductTable() {
     const db = await getDB();
-
-    await db.execAsync(`PRAGMA foreign_keys = ON`);
     
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -13,13 +11,11 @@ async function createProductTable() {
                     name TEXT NOT NULL,
                     description TEXT,
                     price INTEGER,
-                    quantity,
+                    quantity INTEGER,
                     image TEXT,
                     expiry_date TEXT,
                     category_id INTEGER,
                     supplier_id INTEGER,
-                    FOREIGN KEY(category_id) REFERENCES categories(id),
-                    FOREIGN KEY(supplier_id) REFERENCES suppliers(id)
                 );`,
                 [],
                 () => {

@@ -2,9 +2,7 @@ import getDB from './database';
 
 
 async function createCategoryTable() {
-    const db = await getDB();
-    await db.execAsync(`PRAGMA foreign_keys = ON`);
-    
+    const db = await getDB();    
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(

@@ -20,7 +20,6 @@ export default function Header() {
     const handleLogout = async () => {
         try {
             await AsyncStorage.removeItem('loggedInUser');
-            navigation.replace('Login'); 
         } catch (error) {
             console.error("Logout error:", error);
         }

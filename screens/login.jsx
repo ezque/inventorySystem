@@ -5,14 +5,21 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import { setupAccountsTable, loginAccount } from '../database/accounts';
 
-export default function Login() {
+export default function Login({ setIsLoggedIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const navigation = useNavigation();
 
     useEffect(() => {
-        setupAccountsTable();
+        async function checkUser() {
+            const user = await AsyncStorage.getItem('loggedInUser');
+            if (user) {
+                setIsLoggedIn(true);
+                navigation.replace('Home');
+            }
+        }
+        checkUser();
     }, []);
 
     async function handleLogin() {
@@ -20,7 +27,8 @@ export default function Login() {
             const success = await loginAccount(email, password);
             if (success) {
                 await AsyncStorage.setItem('loggedInUser', email);
-                navigation.navigate('Home');
+                setIsLoggedIn(true); // ✅ Update App.js state
+                navigation.replace('Home');
             } else {
                 Alert.alert("Error", "Invalid email or password.");
             }

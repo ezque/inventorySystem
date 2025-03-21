@@ -18,7 +18,7 @@ import { createProductTable } from "./database/product";
 import { createCategoryTable } from "./database/category";
 
 // ✅ Reset database on app start
-// import { resetDatabase } from "./database/accounts";
+import { resetDatabase } from "./database/accounts";
 
 const Stack = createStackNavigator();
 
@@ -71,7 +71,11 @@ export default function App() {
     <NavigationContainer>
       <StatusBar style="auto" />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!isLoggedIn && <Stack.Screen name="Login" component={Login} />}
+        {!isLoggedIn && 
+          <Stack.Screen name="Login">
+          {props => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
+          </Stack.Screen>
+        }
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="Category" component={Category} />
